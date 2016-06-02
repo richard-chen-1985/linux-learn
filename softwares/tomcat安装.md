@@ -46,6 +46,25 @@ ufw status
 
 将应用程序代码上传到 `/export/app/test1/`
 
+拷贝tomcat的配置目录
+
+```shell
+cd /export/servers/tomcat
+cp conf /export/domains/test1/
+cd /export/domains/test1/
+mkdir logs
+mkdir work
+```
+
+设置本应用的root目录
+
+`vi -p conf/Catalina/localhost/ROOT.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/" docBase="/export/app/test1"></Context>
+```
+
 将tomcat的配置目录`/export/servers/tomcat/conf` 拷贝到 `/export/domains/test1/` 目录
 
 在`/export/domains/test1/` 新建tomcat的shell文件`tomcat.sh`
