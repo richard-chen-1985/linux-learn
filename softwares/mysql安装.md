@@ -67,6 +67,13 @@ UPDATE mysql.user SET Password = PASSWORD('new_password') WHERE User = 'root';
 FLUSH PRIVILEGES;
 ```
 
+## 支持localhost的socket链接
+
+```
+# 修改MySQL的配置文件my.cnf，指定mysql.socket的位置：
+/var/lib/mysql/mysql.sock #(你的mysql.socket路径)。
+```
+
 ## 开机自启动
 
 在`/etc/rc.local`文件的最后中添加如下的一行: `/usr/local/mysql/bin/mysqld_safe --user=mysql &`

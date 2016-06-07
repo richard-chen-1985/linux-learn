@@ -8,7 +8,12 @@ http://ee1.php.net/get/php-5.5.36.tar.gz/from/this/mirror
 
 ### 获取并解压 PHP 源代码:
 
-`tar zxf php-x.x.x`
+```
+tar zxf php-x.x.x
+./configure -prefix=/export/servers/php --enable-fpm --enable-mbstring --disable-mbregex --with-mysql --with-mysqli
+make
+sudo make install
+```
 
 配置并构建 PHP。在此步骤您可以使用很多选项自定义 PHP，例如启用某些扩展等。 运行 `./configure --help` 命令来获得完整的可用选项清单。 在本示例中，我们仅进行包含 PHP-FPM 和 MySQL 支持的简单配置。
 
@@ -23,21 +28,20 @@ yum install libcurl-devel
 #mb_string
 cd /export/servers/php-5.5.36/ext/mbstring
 /usr/local/bin/phpize
-./configure --with-php-config=/usr/local/bin/php-config
+./configure --with-php-config=/export/servers/php/bin/php-config
 make && make install
 #mysqli
 cd /export/servers/php-5.5.36/ext/mysqli
 /usr/local/bin/phpize
-./configure --with-php-config=/usr/local/bin/php-config
+./configure --with-php-config=/export/servers/php/bin/php-config
 make && make install
 ```
 
 创建配置文件，并将其复制到正确的位置。
 
 ```
-cp php.ini-development /usr/local/lib/php.ini
-cp /usr/local/etc/php-fpm.conf.default /usr/local/etc/php-fpm.conf
-cp sapi/fpm/php-fpm /usr/local/bin
+cp php.ini-development /export/servers/php/lib/php.ini
+cp /usr/local/etc/php-fpm.conf.default /export/servers/php/etc/php-fpm.conf
 ```
 
 需要着重提醒的是，如果文件不存在，则阻止 Nginx 将请求发送到后端的 PHP-FPM 模块， 以避免遭受恶意脚本注入的攻击。
@@ -46,7 +50,7 @@ cp sapi/fpm/php-fpm /usr/local/bin
 
 打开 `php.ini:`
 
-`vim /usr/local/lib/php.ini`
+`vim /export/servers/php/lib/php.ini`
 
 定位到 `cgi.fix_pathinfo=` 并将其修改为如下所示：
 
@@ -54,7 +58,7 @@ cp sapi/fpm/php-fpm /usr/local/bin
 
 在启动服务之前，需要修改 `php-fpm.conf` 配置文件，确保 `php-fpm` 模块使用 `www-data` 用户和 `www-data` 用户组的身份运行。
 
-`vim /usr/local/etc/php-fpm.conf`
+`vim /export/servers/php/etc/php-fpm.conf`
 
 找到以下内容并修改：
 
@@ -68,7 +72,7 @@ group = www-data
 
 然后启动 `php-fpm` 服务：
 
-`/usr/local/bin/php-fpm`
+`/export/servers/php/sbin/php-fpm`
 
 本文档未涵盖对 `php-fpm` 进行进一步配置的信息，如果您需要更多信息，请查阅相关文档。
 
@@ -76,7 +80,7 @@ group = www-data
 
 ```
 killall php-fpm
-/usr/loca/bin/php-fpm &
+/export/servers/php/sbin/php-fpm &
 ```
 
 ### 配置 Nginx 使其支持 PHP 应用：
@@ -124,4 +128,4 @@ echo "<?php phpinfo(); ?>" >> /usr/local/nginx/html/index.php
 
 ## php自启动
 
-在 `/etc/rc.local`中加入 `/usr/local/bin/php-fpm &`
+在 `/etc/rc.local`中加入 `/export/servers/php/sbin/php-fpm &`
