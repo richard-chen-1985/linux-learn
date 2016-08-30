@@ -21,6 +21,11 @@ void gtk_im_context_set_client_window (GtkIMContext *context,
    gtk_im_context_focus_in(context);
 }
 ```
+这装依赖库
+
+```shell
+sudo apt-get install build-essential libgtk2.0-dev
+```
 
 将上一步的代码编译成共享库libsublime-imfix.so，命令
 
