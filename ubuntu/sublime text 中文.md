@@ -115,4 +115,4 @@ Exec=bash -c "LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so exec /opt/sublime
 
 ## 字体推荐
 
-Monospace
+Ubuntu Mono
