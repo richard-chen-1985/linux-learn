@@ -1,6 +1,6 @@
 解决ubuntu中vi插入模式中键盘不对应问题
  
-在终端下输入 `sudo gedit /etc/vim/virmc.tiny`
+在终端下输入 `sudo gedit /etc/vim/vimrc.tiny`
  
 1、在弹出的文本编辑器中找到 `set compatible`
  
