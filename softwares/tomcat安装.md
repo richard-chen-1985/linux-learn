@@ -98,9 +98,9 @@ stop() {
 
 CMD=$1
 
-if [ $CMD == "stop" ]; then
+if [[ $CMD = "stop" ]]; then
     stop;
-elif [ $CMD == "restart" ]; then
+elif [[ $CMD = "restart" ]]; then
     stop;
     start;
 else
