@@ -77,3 +77,12 @@ FLUSH PRIVILEGES;
 ## 开机自启动
 
 在`/etc/rc.local`文件的最后中添加如下的一行: `/usr/local/mysql/bin/mysqld_safe --user=mysql &`
+
+## 修改数据目录位置
+
+```
+# vi my.conf
+datadir = /home/mysql/data
+```
+
+> 注意：`datadir` 必须是 `/home/mysql` 目录下，否则启动时会报无权限的错误
