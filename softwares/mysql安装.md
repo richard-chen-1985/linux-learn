@@ -10,7 +10,7 @@
 
 ## 安装命令如下:
 
-```
+```bash
 groupadd mysql
 # /bin/fase表示用户没有登录 os 的权限
 useradd -r -g mysql -s /bin/false mysql
@@ -21,7 +21,11 @@ ln -s full-path-to-mysql-VERSION-OS mysql
 cd mysql
 chown -R mysql .
 chgrp -R mysql .
-scripts/mysql_install_db --user=mysql
+# basedir 为安装目录
+# datadir 为数据目录
+scripts/mysql_install_db --user=mysql \
+  --basedir=/opt/mysql/mysql \
+  --datadir=/opt/mysql/mysql/data
 chown -R root .
 chown -R mysql data
 # 开启 mysql 服务
@@ -32,7 +36,7 @@ cp support-files/mysql.server /etc/init.d/mysql.server
 
 ## 设置密码
 
-```
+```bash
 mysql> SELECT User, Host, Password FROM mysql.user;
 +------+--------------------+----------+
 | User | Host               | Password |
@@ -46,11 +50,11 @@ mysql> SELECT User, Host, Password FROM mysql.user;
 +------+--------------------+----------+
 ```
 
-```
+```bash
 mysql -u root
 ```
 
-```
+```bash
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('123456');
 SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('123456');
 SET PASSWORD FOR 'root'@'::1' = PASSWORD('123456');
@@ -58,18 +62,18 @@ SET PASSWORD FOR 'root'@'::1' = PASSWORD('123456');
 
 也可以一条命令设置 `root`
 
-```
+```bash
 mysql -u root
 ```
 
-```
+```bash
 UPDATE mysql.user SET Password = PASSWORD('new_password') WHERE User = 'root';
 FLUSH PRIVILEGES;
 ```
 
 ## 支持localhost的socket链接
 
-```
+```bash
 # 修改MySQL的配置文件my.cnf，指定mysql.socket的位置：
 /var/lib/mysql/mysql.sock #(你的mysql.socket路径)。
 ```
@@ -77,12 +81,3 @@ FLUSH PRIVILEGES;
 ## 开机自启动
 
 在`/etc/rc.local`文件的最后中添加如下的一行: `/usr/local/mysql/bin/mysqld_safe --user=mysql &`
-
-## 修改数据目录位置
-
-```
-# vi my.conf
-datadir = /home/mysql/data
-```
-
-> 注意：`datadir` 必须是 `/home/mysql` 目录下，否则启动时会报无权限的错误
